@@ -27,11 +27,14 @@
 -include_lib("scheduler_protobuf.hrl").
 
 -export([init/1,
+         unknown/2,
          registered/3,
          reregistered/2,
          disconnected/2,
          resource_offers/3,
+         resource_inverse_offers/3,
          offer_rescinded/3,
+         inverse_offer_rescinded/3,
          status_update/3,
          framework_message/3,
          slave_lost/3,
@@ -49,6 +52,9 @@ init(Options) ->
     TestPid = proplists:get_value(test_pid, Options),
     {ok, FrameworkInfo, #state{user = FrameworkInfo#'FrameworkInfo'.user,
                                test_pid = TestPid}}.
+
+unknown(_SchedulerInfo, State) ->
+    {ok, State}.
 
 registered(SchedulerInfo, EventSubscribed,
            #state{test_pid = TestPid} = State) ->
@@ -68,9 +74,15 @@ resource_offers(SchedulerInfo, EventOffers,
     reply(TestPid, resource_offers, {self(), SchedulerInfo, EventOffers}),
     {ok, State}.
 
+resource_inverse_offers(_SchedulerInfo, _EventInverseOffers, State) ->
+    {ok, State}.
+
 offer_rescinded(SchedulerInfo, EventRescind,
                 #state{test_pid = TestPid} = State) ->
     reply(TestPid, offer_rescinded, {self(), SchedulerInfo, EventRescind}),
+    {ok, State}.
+
+inverse_offer_rescinded(_SchedulerInfo, _EventRescindInverseOffer, State) ->
     {ok, State}.
 
 status_update(SchedulerInfo, EventUpdate, #state{test_pid = TestPid} = State) ->
