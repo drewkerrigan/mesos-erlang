@@ -39,6 +39,12 @@
 -type 'CommandInfo.URI'() :: #'CommandInfo.URI'{}.
 -export_type(['CommandInfo.URI'/0]).
 
+-type 'Environment'() :: #'Environment'{}.
+-export_type(['Environment'/0]).
+
+-type 'Environment.Variable'() :: #'Environment.Variable'{}.
+-export_type(['Environment.Variable'/0]).
+
 -type 'ExecutorID'() :: #'ExecutorID'{}.
 -export_type(['ExecutorID'/0]).
 

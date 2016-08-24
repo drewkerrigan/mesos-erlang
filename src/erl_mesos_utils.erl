@@ -69,6 +69,8 @@
          task_status/8,
          task_status/9]).
 
+-export([environment/1, environment_variable/2]).
+
 -export([launch_offer_operation/1,
          reserve_offer_operation/1,
          unreserve_offer_operation/1,
@@ -438,6 +440,18 @@ task_status(TaskId, State, Source, AgentId, ExecutorId, Message, Reason, Data,
                   agent_id = AgentId,
                   executor_id = ExecutorId,
                   uuid = Uuid}.
+
+%% @doc Returns environment.
+-spec environment([erl_mesos:'Environment.Variable'()]) ->
+    erl_mesos:'Environment'().
+environment(Variables) ->
+    #'Environment'{variables = Variables}.
+
+%% @doc Returns environment variable.
+-spec environment_variable(string(), string()) ->
+    erl_mesos:'Environment.Variable'().
+environment_variable(Name, Value) ->
+    #'Environment.Variable'{name = Name, value = Value}.
 
 %% @doc Returns launch offer operation.
 -spec launch_offer_operation([erl_mesos:'TaskInfo'()]) ->
