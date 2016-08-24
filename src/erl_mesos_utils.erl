@@ -36,7 +36,11 @@
 
 -export([command_info_uri/1, command_info_uri/2, command_info_uri/3]).
 
--export([command_info/1, command_info/2, command_info/3, command_info/4]).
+-export([command_info/1,
+         command_info/2,
+         command_info/3,
+         command_info/4,
+         command_info/5]).
 
 -export([scalar_resource/2,
          ranges_resource/2,
@@ -153,32 +157,41 @@ command_info_uri(Value, Executable, Extract) ->
                        executable = Executable,
                        extract = Extract}.
 
-%% @equiv command_info(Value, [], true, undefined)
+%% @equiv command_info(Value, [], true, undefined, undefined)
 -spec command_info(string()) -> erl_mesos:'CommandInfo'().
 command_info(Value) ->
-    command_info(Value, [], true, undefined).
+    command_info(Value, [], true, undefined, undefined).
 
-%% @equiv command_info(Value, CommandInfoUris, true, undefined)
+%% @equiv command_info(Value, CommandInfoUris, true, undefined, undefined)
 -spec command_info(string(), [erl_mesos:'CommandInfo.URI'()]) ->
     erl_mesos:'CommandInfo'().
 command_info(Value, CommandInfoUris) ->
-    command_info(Value, CommandInfoUris, true, undefined).
+    command_info(Value, CommandInfoUris, true, undefined, undefined).
 
-%% @equiv command_info(Value, CommandInfoUris, Shell, undefined)
+%% @equiv command_info(Value, CommandInfoUris, Shell, undefined, undefined)
 -spec command_info(string(), [erl_mesos:'CommandInfo.URI'()], boolean()) ->
     erl_mesos:'CommandInfo'().
 command_info(Value, CommandInfoUris, Shell) ->
-    command_info(Value, CommandInfoUris, Shell, undefined).
+    command_info(Value, CommandInfoUris, Shell, undefined, undefined).
 
-%% @doc Returns command info.
+%% @equiv command_info(Value, CommandInfoUris, Shell, User, undefined)
 -spec command_info(string(), [erl_mesos:'CommandInfo.URI'()], boolean(),
                    undefined | string()) ->
     erl_mesos:'CommandInfo'().
 command_info(Value, CommandInfoUris, Shell, User) ->
+    command_info(Value, CommandInfoUris, Shell, User, undefined).
+
+%% @doc Returns command info.
+-spec command_info(string(), [erl_mesos:'CommandInfo.URI'()], boolean(),
+                   undefined | string(),
+                   undefined | erl_mesos:'Environment'()) ->
+    erl_mesos:'CommandInfo'().
+command_info(Value, CommandInfoUris, Shell, User, Environment) ->
     #'CommandInfo'{uris = CommandInfoUris,
                    shell = Shell,
                    value = Value,
-                   user = User}.
+                   user = User,
+                   environment = Environment}.
 
 %% @doc Returns scalar resource.
 -spec scalar_resource(string(), float()) -> erl_mesos:'Resource'().
