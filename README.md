@@ -26,9 +26,23 @@ State = term()
 Reason = term()
 ```
 
-Whenever a `erl_mesos_scheduler` process is started using 
-`erl_mesos:start_scheduler/4` or `erl_mesos_scheduler:start_link/4` 
-this function is called by the new process to initialize the framework.
+#### Module:unknown/2
+
+```erlang
+Module:unknown(SchedulerInfo, State) ->
+    {ok, NewState} | {stop, NewState}.
+```
+
+Data types:
+
+```erlang
+SchedulerInfo = erl_mesos_scheduler:scheduler_info()
+State = term()
+NewState = term()
+```
+
+Whenever a `erl_mesos_scheduler` process receives unknown event from
+Mesos this function is called to handle this event.
 
 #### Module:registered/3
 
@@ -89,6 +103,44 @@ NewState = term()
 Whenever a `erl_mesos_scheduler` process reregistered to the Mesos 
 master this function is called to handle the registration.
 
+#### Module:resource_offers/3
+
+```erlang
+Module:resource_offers(SchedulerInfo, EventOffers, State) ->
+    {ok, NewState} | {stop, NewState}.
+```
+
+Data types:
+
+```erlang
+SchedulerInfo = erl_mesos_scheduler:scheduler_info()
+EventOffers = erl_mesos_scheduler:'Event.Offers'()
+State = term()
+NewState = term()
+```
+
+Whenever a `erl_mesos_scheduler` process receives offers event from
+Mesos this function is called to handle this event.
+
+#### Module:resource_inverse_offers/3
+
+```erlang
+Module:resource_offers(SchedulerInfo, EventInverseOffers, State) ->
+    {ok, NewState} | {stop, NewState}.
+```
+
+Data types:
+
+```erlang
+SchedulerInfo = erl_mesos_scheduler:scheduler_info()
+EventInverseOffers = erl_mesos_scheduler:'Event.InverseOffers'()
+State = term()
+NewState = term()
+```
+
+Whenever a `erl_mesos_scheduler` process receives inverse offers event 
+from Mesos this function is called to handle this event.
+
 #### Module:offer_rescinded/3
 
 ```erlang
@@ -107,6 +159,26 @@ NewState = term()
 
 Whenever a `erl_mesos_scheduler` process receives rescind event from
 Mesos this function is called to handle this event.
+
+#### Module:inverse_offer_rescinded/3
+
+```erlang
+Module:inverse_offer_rescinded(SchedulerInfo, EventRescindInverseOffer, 
+                               State) ->
+    {ok, NewState} | {stop, NewState}.
+```
+
+Data types:
+
+```erlang
+SchedulerInfo = erl_mesos_scheduler:scheduler_info()
+EventRescindInverseOffer = erl_mesos_scheduler:'Event.RescindInverseOffer'()
+State = term()
+NewState = term()
+```
+
+Whenever a `erl_mesos_scheduler` process receives inverse rescind event 
+from Mesos this function is called to handle this event.
 
 #### Module:status_update/3
 
