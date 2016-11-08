@@ -1,9 +1,6 @@
 .rebar
 deps
 doc
-proto
-include/*_protobuf.hrl
-src/*_protobuf.erl
 ebin
 logs
 *.beam
